@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "PinPeak 0.1.1",
+    "slug": "PinPeak",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "description": "Low Pass filter smoothed to 0.3 (still looks a bit slow to get to the real angle number).\nUpdated magnetometer interval to every 0.4 seconds.\nUpdated the list of peaks to all the 14ers in Colorado (58 peaks)."
+  }
+}

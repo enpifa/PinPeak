@@ -1,0 +1,466 @@
+{
+   "Mt. Elbert": {
+      "Rank": 1,
+      "Category Rank": 1,
+      "Elevation": 14440,
+      "Range": "Sawatch Range",
+      "Latitude": 39.1178,
+      "Longitude": -106.4454
+   },
+   "Mt. Massive": {
+      "Rank": 2,
+      "Category Rank": 2,
+      "Elevation": 14428,
+      "Range": "Sawatch Range",
+      "Latitude": 39.1875,
+      "Longitude": -106.4757
+   },
+   "Mt. Harvard": {
+      "Rank": 3,
+      "Category Rank": 3,
+      "Elevation": 14421,
+      "Range": "Sawatch Range",
+      "Latitude": 38.9244,
+      "Longitude": -106.3207
+   },
+   "Blanca Peak": {
+      "Rank": 4,
+      "Category Rank": 4,
+      "Elevation": 14351,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.5775,
+      "Longitude": -105.4856
+   },
+   "La Plata Peak": {
+      "Rank": 5,
+      "Category Rank": 5,
+      "Elevation": 14343,
+      "Range": "Sawatch Range",
+      "Latitude": 39.0294,
+      "Longitude": -106.4729
+   },
+   "Uncompahgre Peak": {
+      "Rank": 6,
+      "Category Rank": 6,
+      "Elevation": 14321,
+      "Range": "San Juan Mountains",
+      "Latitude": 38.0717,
+      "Longitude": -107.4621
+   },
+   "Crestone Peak": {
+      "Rank": 7,
+      "Category Rank": 7,
+      "Elevation": 14300,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.9667,
+      "Longitude": -105.5853
+   },
+   "Mt. Lincoln": {
+      "Rank": 8,
+      "Category Rank": 8,
+      "Elevation": 14286,
+      "Range": "Mosquito Range",
+      "Latitude": 39.3515,
+      "Longitude": -106.1116
+   },
+   "Grays Peak": {
+      "Rank": 9,
+      "Category Rank": 9,
+      "Elevation": 14270,
+      "Range": "Front Range",
+      "Latitude": 39.6339,
+      "Longitude": -105.8176
+   },
+   "Mt. Antero": {
+      "Rank": 10,
+      "Category Rank": 10,
+      "Elevation": 14269,
+      "Range": "Sawatch Range",
+      "Latitude": 38.6741,
+      "Longitude": -106.2462
+   },
+   "Torreys Peak": {
+      "Rank": 11,
+      "Category Rank": 11,
+      "Elevation": 14267,
+      "Range": "Front Range",
+      "Latitude": 39.6428,
+      "Longitude": -105.8214
+   },
+   "Castle Peak": {
+      "Rank": 12,
+      "Category Rank": 12,
+      "Elevation": 14265,
+      "Range": "Elk Mountains",
+      "Latitude": 30.0097,
+      "Longitude": -106.8614
+   },
+   "Quandary Peak": {
+      "Rank": 13,
+      "Category Rank": 13,
+      "Elevation": 14265,
+      "Range": "Tenmile Range",
+      "Latitude": 39.3972,
+      "Longitude": -106.1064
+   },
+   "Mt. Evans": {
+      "Rank": 14,
+      "Category Rank": 14,
+      "Elevation": 14264,
+      "Range": "Front Range",
+      "Latitude": 39.5883,
+      "Longitude": -105.6438
+   },
+   "Longs Peak": {
+      "Rank": 15,
+      "Category Rank": 15,
+      "Elevation": 14255,
+      "Range": "Front Range",
+      "Latitude": 40.255,
+      "Longitude": -105.6151
+   },
+   "Mt. Wilson": {
+      "Rank": 16,
+      "Category Rank": 16,
+      "Elevation": 14246,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.8391,
+      "Longitude": -107.9916
+   },
+   "Mt. Cameron": {
+      "Rank": 17,
+      "Category Rank": 17,
+      "Elevation": 14238,
+      "Range": "Mosquito Range",
+      "Latitude": 39.3469,
+      "Longitude": -106.1186
+   },
+   "Mt. Shavano": {
+      "Rank": 18,
+      "Category Rank": 18,
+      "Elevation": 14229,
+      "Range": "Sawatch Range",
+      "Latitude": 38.6192,
+      "Longitude": -106.2393
+   },
+   "Mt. Princeton": {
+      "Rank": 19,
+      "Category Rank": 19,
+      "Elevation": 14197,
+      "Range": "Sawatch Range",
+      "Latitude": 38.7492,
+      "Longitude": -106.2424
+   },
+   "Mt. Belford": {
+      "Rank": 20,
+      "Category Rank": 20,
+      "Elevation": 14197,
+      "Range": "Sawatch Range",
+      "Latitude": 38.9607,
+      "Longitude": -106.3607
+   },
+   "Crestone Needle": {
+      "Rank": 21,
+      "Category Rank": 21,
+      "Elevation": 14197,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.9647,
+      "Longitude": -105.5766
+   },
+   "Mt. Yale": {
+      "Rank": 22,
+      "Category Rank": 22,
+      "Elevation": 14196,
+      "Range": "Sawatch Range",
+      "Latitude": 38.8442,
+      "Longitude": -106.3138
+   },
+   "Mt. Bross": {
+      "Rank": 23,
+      "Category Rank": 23,
+      "Elevation": 14172,
+      "Range": "Mosquito Range",
+      "Latitude": 39.3354,
+      "Longitude": -106.1077
+   },
+   "Kit Carson Peak": {
+      "Rank": 24,
+      "Category Rank": 24,
+      "Elevation": 14165,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.9797,
+      "Longitude": -105.6026
+   },
+   "El Diente Peak": {
+      "Rank": 25,
+      "Category Rank": 25,
+      "Elevation": 14159,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.8394,
+      "Longitude": -108.0053
+   },
+   "Maroon Peak": {
+      "Rank": 26,
+      "Category Rank": 26,
+      "Elevation": 14156,
+      "Range": "Elk Mountains",
+      "Latitude": 39.0708,
+      "Longitude": -106.989
+   },
+   "Tabeguache Peak": {
+      "Rank": 27,
+      "Category Rank": 27,
+      "Elevation": 14155,
+      "Range": "Sawatch Range",
+      "Latitude": 38.6255,
+      "Longitude": -106.2509
+   },
+   "Mt. Oxford": {
+      "Rank": 28,
+      "Category Rank": 28,
+      "Elevation": 14153,
+      "Range": "Sawatch Range",
+      "Latitude": 38.9648,
+      "Longitude": -106.3388
+   },
+   "Mt. Sneffels": {
+      "Rank": 29,
+      "Category Rank": 29,
+      "Elevation": 14150,
+      "Range": "San Juan Mountains",
+      "Latitude": 38.0038,
+      "Longitude": -107.7923
+   },
+   "Mt. Democrat": {
+      "Rank": 30,
+      "Category Rank": 30,
+      "Elevation": 14148,
+      "Range": "Mosquito Range",
+      "Latitude": 39.3396,
+      "Longitude": -106.14
+   },
+   "Capitol Peak": {
+      "Rank": 31,
+      "Category Rank": 31,
+      "Elevation": 14130,
+      "Range": "Elk Mountains",
+      "Latitude": 39.1503,
+      "Longitude": -107.0829
+   },
+   "Pikes Peak": {
+      "Rank": 32,
+      "Category Rank": 32,
+      "Elevation": 14110,
+      "Range": "Front Range",
+      "Latitude": 38.8405,
+      "Longitude": -105.0442
+   },
+   "Snowmass Mountain": {
+      "Rank": 33,
+      "Category Rank": 33,
+      "Elevation": 14092,
+      "Range": "Elk Mountains",
+      "Latitude": 39.1188,
+      "Longitude": -107.0665
+   },
+   "Windom Peak": {
+      "Rank": 34,
+      "Category Rank": 34,
+      "Elevation": 14087,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.6212,
+      "Longitude": -107.5919
+   },
+   "Mt. Eolus": {
+      "Rank": 35,
+      "Category Rank": 35,
+      "Elevation": 14083,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.6218,
+      "Longitude": -107.6227
+   },
+   "Challenger Point": {
+      "Rank": 36,
+      "Category Rank": 36,
+      "Elevation": 14081,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.9804,
+      "Longitude": -105.6066
+   },
+   "Mt. Columbia": {
+      "Rank": 37,
+      "Category Rank": 37,
+      "Elevation": 14073,
+      "Range": "Sawatch Range",
+      "Latitude": 38.9039,
+      "Longitude": -106.2975
+   },
+   "Missouri Mountain": {
+      "Rank": 38,
+      "Category Rank": 38,
+      "Elevation": 14067,
+      "Range": "Sawatch Range",
+      "Latitude": 38.9476,
+      "Longitude": -106.3785
+   },
+   "Humboldt Peak": {
+      "Rank": 39,
+      "Category Rank": 39,
+      "Elevation": 14064,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.9762,
+      "Longitude": -105.6688
+   },
+   "Mt. Bierstadt": {
+      "Rank": 40,
+      "Category Rank": 40,
+      "Elevation": 14060,
+      "Range": "Front Range",
+      "Latitude": 39.5826,
+      "Longitude": -105.6688
+   },
+   "Conundrum Peak": {
+      "Rank": 40,
+      "Category Rank": 40,
+      "Elevation": 14060,
+      "Range": "Elk Mountains",
+      "Latitude": 39.0144,
+      "Longitude": -106.8639
+   },
+   "Sunlight Peak": {
+      "Rank": 42,
+      "Category Rank": 42,
+      "Elevation": 14059,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.6274,
+      "Longitude": -107.5959
+   },
+   "Handies Peak": {
+      "Rank": 43,
+      "Category Rank": 43,
+      "Elevation": 14048,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.913,
+      "Longitude": -107.5044
+   },
+   "Culebra Peak": {
+      "Rank": 44,
+      "Category Rank": 44,
+      "Elevation": 14047,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.1224,
+      "Longitude": -105.1858
+   },
+   "Mt. Lindsey": {
+      "Rank": 45,
+      "Category Rank": 45,
+      "Elevation": 14042,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.5837,
+      "Longitude": -105.4449
+   },
+   "Ellingwood Point": {
+      "Rank": 45,
+      "Category Rank": 45,
+      "Elevation": 14042,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.5826,
+      "Longitude": -105.4927
+   },
+   "North Eolus": {
+      "Rank": 47,
+      "Category Rank": 47,
+      "Elevation": 14039,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.6251,
+      "Longitude": -107.6212
+   },
+   "Little Bear Peak": {
+      "Rank": 48,
+      "Category Rank": 48,
+      "Elevation": 14037,
+      "Range": "Sangre de Cristo",
+      "Latitude": 37.5666,
+      "Longitude": -105.4972
+   },
+   "Mt. Sherman": {
+      "Rank": 49,
+      "Category Rank": 49,
+      "Elevation": 14036,
+      "Range": "Mosquito Range",
+      "Latitude": 39.225,
+      "Longitude": -106.1699
+   },
+   "Redcloud Peak": {
+      "Rank": 50,
+      "Category Rank": 50,
+      "Elevation": 14034,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.941,
+      "Longitude": -107.4219
+   },
+   "Pyramid Peak": {
+      "Rank": 51,
+      "Category Rank": 51,
+      "Elevation": 14018,
+      "Range": "Elk Mountains",
+      "Latitude": 39.0717,
+      "Longitude": -106.9502
+   },
+   "Wilson Peak": {
+      "Rank": 52,
+      "Category Rank": 52,
+      "Elevation": 14017,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.8603,
+      "Longitude": -107.9847
+   },
+   "Wetterhorn Peak": {
+      "Rank": 53,
+      "Category Rank": 53,
+      "Elevation": 14015,
+      "Range": "San Juan Mountains",
+      "Latitude": 38.0607,
+      "Longitude": -107.5109
+   },
+   "San Luis Peak": {
+      "Rank": 54,
+      "Category Rank": 54,
+      "Elevation": 14014,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.9868,
+      "Longitude": -106.9313
+   },
+   "North Maroon Peak": {
+      "Rank": 54,
+      "Category Rank": 54,
+      "Elevation": 14014,
+      "Range": "Elk Mountains",
+      "Latitude": 39.0761,
+      "Longitude": -106.9873
+   },
+   "Mt. of the Holy Cross": {
+      "Rank": 56,
+      "Category Rank": 56,
+      "Elevation": 14005,
+      "Range": "Sawatch Range",
+      "Latitude": 39.4668,
+      "Longitude": -106.4817
+   },
+   "Huron Peak": {
+      "Rank": 57,
+      "Category Rank": 57,
+      "Elevation": 14003,
+      "Range": "Sawatch Range",
+      "Latitude": 38.9455,
+      "Longitude": -106.4381
+   },
+   "Sunshine Peak": {
+      "Rank": 58,
+      "Category Rank": 58,
+      "Elevation": 14001,
+      "Range": "San Juan Mountains",
+      "Latitude": 37.9228,
+      "Longitude": -107.4256
+   }
+}
