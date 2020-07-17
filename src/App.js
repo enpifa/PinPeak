@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Dimensions } from 'react-native';
 import { Magnetometer } from 'expo-sensors';
+import Constants from 'expo-constants';
 import LPF from 'lpf';
 import listOfPeaks from './ListOfPeaks.json';
-
-import peakDB from './constants/peakDB';
-import { comparePoints, getAngle, getDegree, getDirection, findAngleMatch, calculateDistanceBetweenAB } from './utils/calculations';
+import { getAngle, getDegree, getFace, getPeaksOnTarget, getPeaksInRange } from './utils/calculations';
+import ListOfTargetMountains from './components/ListOfTargetMountains';
+import DrawPeaksOnTargetInRange from './components/DrawPeaksOnTargetInRange';
+import { MAGNETOMETER_AVG_SAMPLE } from './constants/constants';
 // import {magnetometer, SensorTypes, setUpdateIntervalForType} from "react-native-sensors";
 // import Geolocation from '@react-native-community/geolocation';
 
@@ -14,7 +16,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: Constants.statusBarHeight
+    // justifyContent: 'center',
   },
   helloMessage: {
     fontSize: 20
@@ -26,30 +29,34 @@ const styles = StyleSheet.create({
 
 export default function App() {
   const initialCompass = {x: null, y: null, z: null};
-  const initialCoords = {lat: null, long: null};
+  const initialCoordinates = {lat: null, long: null};
+
   const [compass, setCompass] = useState(initialCompass);
-  const [coords, setCoords] = useState(initialCoords);
-  const [face, setFace] = useState(null);
-  const [target, setTarget] = useState([]);
+  const [currentCoordinates, setCurrentCoordinates] = useState(initialCoordinates);
+  const [currentAngle, setCurrentAngle] = useState(null);
+  const [peaksInRange, setPeaksInRange] = useState([]);
+  const [peaksOnTarget, setPeaksOnTarget] = useState([]);
+  // const [positionOfPeaksOnTarget, setPositionOfPeaksOnTarget] = useState([]);
+
   let updateCount = 0;
   let partialCompass = { x: 0, y: 0, z: 0 };
 
   useEffect(() => {
     LPF.init([]);
-    LPF.smoothing = 0.4;
-    Magnetometer.removeAllListeners();
-    setCompass(initialCompass);
-    setCoords(initialCoords);
-    setFace(null);
-    findCoordinates();
-    findXYZ();
+    LPF.smoothing = 0.3;
+    findCoordinates(findXYZ);
   }, []);
   
-  const findCoordinates = () => {
+  const findCoordinates = (callback) => {
     navigator.geolocation.getCurrentPosition(
       position => {
-        const coords = { lat: position.coords.latitude, long: position.coords.longitude };
-        setCoords(coords);
+        const newCurrentCoordinates = { lat: position.coords.latitude, long: position.coords.longitude };
+        setCurrentCoordinates(newCurrentCoordinates);
+
+        const newPeaks = getPeaksInRange(listOfPeaks, newCurrentCoordinates);
+        setPeaksInRange(newPeaks);
+
+        callback();
       },
       error => Alert.alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
@@ -57,18 +64,30 @@ export default function App() {
   };
       
   const findXYZ = () => {
-    Magnetometer.setUpdateInterval(40);
+    Magnetometer.setUpdateInterval(50);
     Magnetometer.addListener(xyz => {
-      if (updateCount === 7) {
-        updateCount = 0;
-        const newCompass = { x: partialCompass.x / 5, y: partialCompass.y / 5, z: partialCompass.z / 5 };
+      // if (peaksInRange === null) {
+      //   setTimeout(1000);
+      //   return;
+      // }
+      if (updateCount === MAGNETOMETER_AVG_SAMPLE) {
+        const newCompass = {
+          x: partialCompass.x / MAGNETOMETER_AVG_SAMPLE,
+          y: partialCompass.y / MAGNETOMETER_AVG_SAMPLE,
+          z: partialCompass.z / MAGNETOMETER_AVG_SAMPLE
+        };
         setCompass(newCompass);
+
         const newAngle = Math.round(LPF.next(getAngle(newCompass)));
         const newDegree = getDegree(newAngle);
-        setFace(newDegree);
-  
-        const matches = findAngleMatch(newDegree, listOfPeaks, coords);
-        setTarget(matches);
+        setCurrentAngle(newDegree);
+
+        const matches = getPeaksOnTarget(newDegree, peaksInRange);
+        setPeaksOnTarget(matches);
+        // setPositionOfPeaksOnTarget(positions);
+
+        // reset partial values
+        updateCount = 0;
         partialCompass = { x: 0, y: 0, z: 0 };
       }
       else {
@@ -81,44 +100,16 @@ export default function App() {
     // Magnetometer.removeAllListeners();
   }
 
-  const getFace = () => {
-    const newAngle = getAngle(compass);
-    const newDegree = getDegree(newAngle);
-    const newDirection = getDirection(newDegree);
-
-    return newDirection;
-
-    // const matches = findAngleMatch(newDegree, peakDB, coords);
-    
-    // setTarget(matches);
-    // setFace(newDegree);
-  };
-
-  const mockMatch = findAngleMatch(191.0, listOfPeaks, {lat: 39.798, long: -105.074});
+  // const [mock1, mock2] = findAngleMatch(315, peaksInRange, currentCoordinates);
       
   return (
     <View style={styles.container}>
-      {coords.lat !== null ? (<Text>Your position i$$ [ {coords.lat}, {coords.long} ]</Text>) : null}
+      {currentCoordinates.lat !== null ? (<Text>Your position is [ {currentCoordinates.lat}, {currentCoordinates.long} ]</Text>) : null}
       {/* {compass.x !== null ? (<Text>[ {compass.x.toFixed(3)} | {compass.y.toFixed(3)} | {compass.z.toFixed(3)} ]</Text>) : null} */}
-      <Text>You are facing [ {getFace()} , angle: {face} ]</Text>
-      <Text>#Matches: {target.length}</Text>
-      {target.length !== 0 ? (
-        target.map(match => {
-          const key = `match-${match}`;
-          const matchCoords = { lat: listOfPeaks[match].Latitude, long: listOfPeaks[match].Longitude };
-          const distance = calculateDistanceBetweenAB(coords, matchCoords);
-          return <Text key={key}>{match} / distance: {distance.toFixed(3)} / angle: {comparePoints(coords, matchCoords).toFixed(4)}</Text>
-        })
-      ) : null}
-      {/* {coords.long !== null ? (
-        Object.keys(listOfPeaks).map(peak => {
-          const target = { lat: listOfPeaks[peak].Latitude, long: listOfPeaks[peak].Longitude };
-          return <Text key={peak}>{peak} => [angle]: {comparePoints(coords, target).toFixed(4)} / [distance]: {calculateDistanceBetweenAB(coords, target).toFixed(4)}</Text>
-        })
-      ) : null} */}
-      {/* <Button title="Get Coordinates" onPress={findCoordinates} /> */}
-      {/* <Button title="Get XYZ" onPress={findXYZ} /> */}
-      {/* <Button title="Where am I facing?" onPress={getFace} /> */}
+      <Text>You are facing [ {getFace(compass)} , angle: {currentAngle} ]</Text>
+      <Text>#Matches: {Object.keys(peaksOnTarget).length}/{Object.keys(peaksInRange).length}</Text>
+      <ListOfTargetMountains showList={false} peaksOnTarget={peaksOnTarget} currentCoordinates={currentCoordinates} />
+      <DrawPeaksOnTargetInRange drawPeaks={true} peaksToDraw={peaksOnTarget} />
     </View>
   );
 }
