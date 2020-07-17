@@ -1,32 +1,5 @@
-import LPF from 'lpf';
-
-interface ICoordinates {
-  long: number;
-  lat: number;
-}
-
-interface ICompass {
-  x: number;
-  y: number;
-  z: number;
-}
-
-interface IPeakDataSet {
-  [key: string] : ICoordinates
-}
-
-interface ISuperCoordinates {
-  "Rank": number;
-  "Category Rank": number;
-  "Elevation": number;
-  "Range": string;
-  "Latitude": number;
-  "Longitude": number;
-}
-
-interface IPeaks {
-  [key: string]: ISuperCoordinates
-}
+import { ICompass, ICoordinates, IPeaks, IPeakToDraw, IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
+import { ANGLE_THRESHOLD } from '../constants/constants';
 
 const comparePoints = (currentPosition: ICoordinates, target: ICoordinates) => {
   const x = target.long - currentPosition.long;
@@ -101,20 +74,57 @@ const getDirection = (degree: number) => {
   }
 };
 
-const findAngleMatch = (myAngle: number, dataset: IPeaks, currentPosition: ICoordinates) => {
-  const matches = [];
-  const ANGLE_THRESHOLD = 5.0;
+const getFace = (compass) => {
+  const newAngle = getAngle(compass);
+  const newDegree = getDegree(newAngle);
+  const newDirection = getDirection(newDegree);
 
-  Object.keys(dataset).forEach(peak => {
-    const superPeak = { lat: dataset[peak].Latitude, long: dataset[peak].Longitude };
-    const angle = comparePoints(currentPosition, superPeak);
-    const min = angle < ANGLE_THRESHOLD ? 0 : angle - ANGLE_THRESHOLD;
-    const max = angle + ANGLE_THRESHOLD;
-    if (myAngle > min && myAngle < max) matches.push(peak);
-  });
+  return newDirection;
+};
 
-  return matches;
-}
+const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[]): IPeakOnTarget[] => {
+  if (peaksInRange === []) return [];
+
+  const result = peaksInRange.reduce((acc, peak) => {
+    const myMinAngle = myAngle < ANGLE_THRESHOLD ? 0 : myAngle - ANGLE_THRESHOLD;
+    const myMaxAngle = myAngle + ANGLE_THRESHOLD;
+
+    // verify the peak is within my min and max range of view
+    if (peak.angle > myMinAngle && peak.angle < myMaxAngle) {
+      return [
+        ...acc,
+        {
+          peak: peak,
+          horizontalPosition: (peak.angle - myMinAngle) / (2 * ANGLE_THRESHOLD)
+        }
+      ];
+    }
+
+    return acc;
+  }, []);
+
+  return result;
+
+  // const matchingPeaks: IPeaks = {};
+  // const matchingAngles: IPeakToDraw[] = [];
+
+  // Object.keys(dataset).forEach(peak => {
+  //   const superPeak = { lat: dataset[peak].Latitude, long: dataset[peak].Longitude };
+  //   const peakAngle = comparePoints(currentPosition, superPeak);
+  //   // TODO: fix this patch!
+  //   const myMinAngle = myAngle < ANGLE_THRESHOLD ? 0 : myAngle - ANGLE_THRESHOLD;
+  //   const myMaxAngle = myAngle + ANGLE_THRESHOLD;
+
+  //   // verify the peak is within my min and max range of view
+  //   if (peakAngle > myMinAngle && peakAngle < myMaxAngle) {
+  //     matchingPeaks[peak] = dataset[peak];
+  //     const horizontalPosition = (peakAngle - myMinAngle) / (2 * ANGLE_THRESHOLD);
+  //     matchingAngles.push({ peak: peak, horizontalPosition: horizontalPosition });
+  //   }
+  // });
+
+  // return [matchingPeaks, matchingAngles];
+};
 
 const calculateDistanceBetweenAB = (pointA: ICoordinates, pointB: ICoordinates): number => {
   // This uses the ‘haversine’ formula to calculate the great-circle distance between two points 
@@ -135,4 +145,29 @@ const calculateDistanceBetweenAB = (pointA: ICoordinates, pointB: ICoordinates):
   return EARTH_RADIUS * c;
 }
 
-export { comparePoints, getQuadrant, calculateAngle, getAngle, getDegree, getDirection, findAngleMatch, calculateDistanceBetweenAB };
+const getPeaksInRange = (allThePeaks: IPeaks, currentCoordinates: ICoordinates): IPeakInRange[] => {
+  if (!allThePeaks) return [];
+
+  const result = Object.keys(allThePeaks).reduce((acc, peak) => {
+    const approximateDistance = Math.abs(currentCoordinates.lat - allThePeaks[peak].Latitude) + Math.abs(currentCoordinates.long - allThePeaks[peak].Longitude)
+    if (approximateDistance <= 2.5) {
+      // return { ...acc, [peak]: allThePeaks[peak] };
+      const peakCoordinates = { long: allThePeaks[peak].Longitude, lat: allThePeaks[peak].Latitude };
+      return [
+        ...acc,
+        {
+          peak: peak,
+          peakInfo: allThePeaks[peak],
+          distance: calculateDistanceBetweenAB(currentCoordinates, peakCoordinates),
+          angle: comparePoints(currentCoordinates, peakCoordinates)
+        }
+      ];
+    }
+
+    return acc;
+  }, []);
+
+  return result;
+};
+
+export { comparePoints, getQuadrant, calculateAngle, getAngle, getDegree, getDirection, getFace, getPeaksOnTarget, calculateDistanceBetweenAB, getPeaksInRange };
