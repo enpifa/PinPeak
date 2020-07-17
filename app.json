@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "PinPeak 0.1.1",
+    "name": "PinPeak 0.1.0",
     "slug": "PinPeak",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -24,6 +24,9 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "Low Pass filter smoothed to 0.3 (still looks a bit slow to get to the real angle number).\nUpdated magnetometer interval to every 0.4 seconds.\nUpdated the list of peaks to all the 14ers in Colorado (58 peaks)."
+    "githubUrl": "https://github.com/enpifa/PinPeak",
+    "description": "Find what mountains you have in front of you!",
+    // "entryPoint": "./src/App.js",
+    // "nodeModulesPath": "./node_modules"
   }
 }

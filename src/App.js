@@ -98,7 +98,7 @@ export default function App() {
       
   return (
     <View style={styles.container}>
-      {coords.lat !== null ? (<Text>Your position is [ {coords.lat}, {coords.long} ]</Text>) : null}
+      {coords.lat !== null ? (<Text>Your position i$$ [ {coords.lat}, {coords.long} ]</Text>) : null}
       {/* {compass.x !== null ? (<Text>[ {compass.x.toFixed(3)} | {compass.y.toFixed(3)} | {compass.z.toFixed(3)} ]</Text>) : null} */}
       <Text>You are facing [ {getFace()} , angle: {face} ]</Text>
       <Text>#Matches: {target.length}</Text>
