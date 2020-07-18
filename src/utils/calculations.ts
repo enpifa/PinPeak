@@ -1,5 +1,5 @@
 import { ICompass, ICoordinates, IPeaks, IPeakToDraw, IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
-import { ANGLE_THRESHOLD } from '../constants/constants';
+import { ANGLE_THRESHOLD, PEAK_IN_RANGE_THRESHOLD } from '../constants/constants';
 
 const comparePoints = (currentPosition: ICoordinates, target: ICoordinates) => {
   const x = target.long - currentPosition.long;
@@ -129,14 +129,23 @@ const calculateDistanceBetweenAB = (pointA: ICoordinates, pointB: ICoordinates):
   return EARTH_RADIUS * c;
 }
 
-const getPeaksInRange = (allThePeaks: IPeaks, currentCoordinates: ICoordinates): IPeakInRange[] => {
+/**
+ * Based on the current coordinates, get the peaks that are in range.
+ * A peak is considered in range if it is within PEAK_IN_RANGE_THRESHOLD coordinate distance.
+ * @param allThePeaks 
+ * @param currentCoordinates 
+ */
+const getPeaksInRange = (allThePeaks: IPeaks, currentCoordinates: ICoordinates, isMock: boolean): IPeakInRange[] => {
+  if (isMock) return [{ peak: 'Longs Peak', peakInfo: allThePeaks['Longs Peak'], distance: 50, angle: 310 }];
+
   if (!allThePeaks) return [];
 
   const result = Object.keys(allThePeaks).reduce((acc, peak) => {
     const approximateDistance = Math.abs(currentCoordinates.lat - allThePeaks[peak].Latitude) + Math.abs(currentCoordinates.long - allThePeaks[peak].Longitude)
-    if (approximateDistance <= 2.5) {
-      // return { ...acc, [peak]: allThePeaks[peak] };
+    
+    if (approximateDistance <= PEAK_IN_RANGE_THRESHOLD) {
       const peakCoordinates = { long: allThePeaks[peak].Longitude, lat: allThePeaks[peak].Latitude };
+
       return [
         ...acc,
         {

@@ -36,7 +36,6 @@ export default function App() {
   const [currentAngle, setCurrentAngle] = useState(null);
   const [peaksInRange, setPeaksInRange] = useState([]);
   const [peaksOnTarget, setPeaksOnTarget] = useState([]);
-  // const [positionOfPeaksOnTarget, setPositionOfPeaksOnTarget] = useState([]);
 
   let updateCount = 0;
   let partialCompass = { x: 0, y: 0, z: 0 };
@@ -54,7 +53,7 @@ export default function App() {
         const newCurrentCoordinates = { lat: position.coords.latitude, long: position.coords.longitude };
         setCurrentCoordinates(newCurrentCoordinates);
 
-        const newPeaks = getPeaksInRange(listOfPeaks, newCurrentCoordinates);
+        const newPeaks = getPeaksInRange(listOfPeaks, newCurrentCoordinates, isMock);
         setPeaksInRange(newPeaks);
 
         callback();
