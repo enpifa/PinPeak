@@ -47,8 +47,12 @@ const getAngle = (magnetometer: ICompass) => {
   return 0;
 };
 
-// Match the device top with pointer 0° degree. (By default 0° starts from the right of the device.)
-const getDegree = (angle: number) => {
+/**
+ * Match the device top with pointer 0° degree. (By default 0° starts from the right of the device.)
+ * @param angle original angle
+ * @param isMock used to debug the app with mock data
+ */
+const getDegree = (angle: number, isMock: boolean): number => {
   return angle - 90 >= 0
     ? angle - 90
     : angle + 271;
@@ -104,26 +108,6 @@ const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[]): IPeakO
   }, []);
 
   return result;
-
-  // const matchingPeaks: IPeaks = {};
-  // const matchingAngles: IPeakToDraw[] = [];
-
-  // Object.keys(dataset).forEach(peak => {
-  //   const superPeak = { lat: dataset[peak].Latitude, long: dataset[peak].Longitude };
-  //   const peakAngle = comparePoints(currentPosition, superPeak);
-  //   // TODO: fix this patch!
-  //   const myMinAngle = myAngle < ANGLE_THRESHOLD ? 0 : myAngle - ANGLE_THRESHOLD;
-  //   const myMaxAngle = myAngle + ANGLE_THRESHOLD;
-
-  //   // verify the peak is within my min and max range of view
-  //   if (peakAngle > myMinAngle && peakAngle < myMaxAngle) {
-  //     matchingPeaks[peak] = dataset[peak];
-  //     const horizontalPosition = (peakAngle - myMinAngle) / (2 * ANGLE_THRESHOLD);
-  //     matchingAngles.push({ peak: peak, horizontalPosition: horizontalPosition });
-  //   }
-  // });
-
-  // return [matchingPeaks, matchingAngles];
 };
 
 const calculateDistanceBetweenAB = (pointA: ICoordinates, pointB: ICoordinates): number => {

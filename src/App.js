@@ -40,6 +40,7 @@ export default function App() {
 
   let updateCount = 0;
   let partialCompass = { x: 0, y: 0, z: 0 };
+  let isMock = true;
 
   useEffect(() => {
     LPF.init([]);
@@ -79,7 +80,7 @@ export default function App() {
         setCompass(newCompass);
 
         const newAngle = Math.round(LPF.next(getAngle(newCompass)));
-        const newDegree = getDegree(newAngle);
+        const newDegree = getDegree(newAngle, isMock);
         setCurrentAngle(newDegree);
 
         const matches = getPeaksOnTarget(newDegree, peaksInRange);
