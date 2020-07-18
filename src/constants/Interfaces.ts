@@ -32,11 +32,6 @@ interface ICompass {
   z: number;
 }
 
-// interface IPeakToDraw {
-//   peak: string;
-//   horizontalPosition: number;
-// }
-
 interface IPeakInRange {
   peak: string;
   peakInfo: ISuperCoordinates;

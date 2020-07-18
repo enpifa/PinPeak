@@ -19,8 +19,13 @@
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@types/jest": "^26.0.4",
+    "@types/react": "^16.9.43",
+    "@types/react-native": "^0.63.1",
+    "@types/react-test-renderer": "^16.9.2",
     "babel-preset-expo": "~8.1.0",
-    "@babel/core": "^7.8.6"
+    "typescript": "^3.9.7"
   },
   "private": true
 }

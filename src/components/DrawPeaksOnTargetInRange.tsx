@@ -1,5 +1,5 @@
 import React from 'react';
-import { IPeaks, IPeakToDraw, IPeakOnTarget } from '../constants/Interfaces';
+import { IPeakOnTarget } from '../constants/Interfaces';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -11,10 +11,6 @@ const styles = StyleSheet.create({
 });
 
 const getHorizontalPosition = (peakToDraw: IPeakOnTarget) => {
-  // if (peakToDraw.length > 0) {
-  //   const left = peakToDraw[0].horizontalPosition * Dimensions.get('window').width;
-  //   return { left: left };
-  // }
   if (!peakToDraw) return {};
   return { left: peakToDraw.horizontalPosition * Dimensions.get('window').width };
 };
@@ -34,12 +30,13 @@ const renderedPeaks = (peaksToDraw: IPeakOnTarget[]) => {
     const peakDistance = peak.peak.distance;
     const peakAngle = peak.peak.angle;
     const peakSize = peak.peak.peakInfo.Elevation;
+    const key = `${peakName}-${peakAngle}-${peakDistance}`;
     return (
-      <View style={[styles.singlePeakContainer, styleHorizontal, styleVertical]}>
+      <View key={key} style={[styles.singlePeakContainer, styleHorizontal, styleVertical]}>
         <Text>{peakName}</Text>
-        <Text>{peakDistance}</Text>
-        <Text>{peakAngle}</Text>
-        <Text>{peakSize}</Text>
+        <Text>{peakDistance}km away</Text>
+        <Text>{peakAngle}˚</Text>
+        <Text>{peakSize}ft</Text>
       </View>
     );
   });
@@ -50,13 +47,7 @@ interface IDrawPeaksOnTargetInRange {
   peaksToDraw: IPeakOnTarget[];
 }
 
-const DrawPeaksOnTargetInRange: React.FC<IDrawPeaksOnTargetInRange> = ({drawPeaks, peaksToDraw }) => {
-  // const drawing = peaksToDraw.map(peak => {
-  //   return 
-  // })
-  // const styleHorizontal = getHorizontalPosition(peaksToDraw[0]);
-  // const styleVertical = getVerticalPosition(peaksToDraw[0]);
-  // const peakName = peaksToDraw && peaksToDraw[0] && peaksToDraw[0].peak && peaksToDraw[0].peak ? peaksToDraw[0].peak.peak : '';
+const DrawPeaksOnTargetInRange: React.FC<IDrawPeaksOnTargetInRange> = ({ drawPeaks, peaksToDraw }) => {
   return (
     <>
     {drawPeaks ? renderedPeaks(peaksToDraw) : null}

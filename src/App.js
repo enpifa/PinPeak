@@ -39,36 +39,40 @@ export default function App() {
 
   let updateCount = 0;
   let partialCompass = { x: 0, y: 0, z: 0 };
-  let isMock = true;
+  let isMock = false;
 
   useEffect(() => {
-    LPF.init([]);
-    LPF.smoothing = 0.3;
-    findCoordinates(findXYZ);
-  }, []);
+    async function findCoordinates(callback) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const newCurrentCoordinates = { lat: position.coords.latitude, long: position.coords.longitude };
+          setCurrentCoordinates(newCurrentCoordinates);
   
-  const findCoordinates = (callback) => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const newCurrentCoordinates = { lat: position.coords.latitude, long: position.coords.longitude };
-        setCurrentCoordinates(newCurrentCoordinates);
+          const newPeaks = getPeaksInRange(listOfPeaks, newCurrentCoordinates, isMock);
+          setPeaksInRange(newPeaks);
+  
+          callback();
+        },
+        error => Alert.alert(error.message),
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      );
+    };
+    // LPF.init([]);
+    // LPF.smoothing = 0.3;
+    findCoordinates(findXYZ);
+  });
+  
 
-        const newPeaks = getPeaksInRange(listOfPeaks, newCurrentCoordinates, isMock);
-        setPeaksInRange(newPeaks);
-
-        callback();
-      },
-      error => Alert.alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  };
+  const mockfn = () => {
+    const newDegree = 315;
+    setCurrentAngle(newDegree);
+    const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
+    setPeaksOnTarget(matches);
+  }
       
   const findXYZ = () => {
     if (isMock) {
-      const newDegree = 315;
-      setCurrentAngle(newDegree);
-      const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
-      setPeaksOnTarget(matches);
+      mockfn();
     }
 
     Magnetometer.setUpdateInterval(50);
@@ -85,7 +89,8 @@ export default function App() {
         };
         setCompass(newCompass);
 
-        const newAngle = Math.round(LPF.next(getAngle(newCompass)));
+        // const newAngle = Math.round(LPF.next(getAngle(newCompass)));
+        const newAngle = getAngle(newCompass);
         const newDegree = getDegree(newAngle);
         setCurrentAngle(newDegree);
 
