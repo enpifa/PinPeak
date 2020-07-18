@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "PinPeak 0.1.0",
+    "name": "PinPeak",
     "slug": "PinPeak",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "0.1.4",
+    "version": "0.1.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,9 +22,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.enpifa.PinPeak"
     },
     "githubUrl": "https://github.com/enpifa/PinPeak",
-    "description": "Find what mountains you have in front of you!"
+    "description": "Find what mountains you have in front of you!",
+    "android": {
+      "package": "com.enpifa.PinPeak"
+    }
   }
 }

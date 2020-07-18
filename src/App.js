@@ -7,6 +7,7 @@ import listOfPeaks from './ListOfPeaks.json';
 import { getAngle, getDegree, getFace, getPeaksOnTarget, getPeaksInRange } from './utils/calculations';
 import ListOfTargetMountains from './components/ListOfTargetMountains';
 import DrawPeaksOnTargetInRange from './components/DrawPeaksOnTargetInRange';
+import HeaderInfo from './components/HeaderInfo';
 import { MAGNETOMETER_AVG_SAMPLE } from './constants/constants';
 // import {magnetometer, SensorTypes, setUpdateIntervalForType} from "react-native-sensors";
 // import Geolocation from '@react-native-community/geolocation';
@@ -37,20 +38,21 @@ export default function App() {
   const [peaksInRange, setPeaksInRange] = useState([]);
   const [peaksOnTarget, setPeaksOnTarget] = useState([]);
   const [subscription, setSubscription] = React.useState(null);
-  
-  let updateCount = 0;
-  let partialCompass = { x: 0, y: 0, z: 0 };
-  let isMock = false;
 
-  const _toggleMagnetometer = () => {
+  const _toggle = () => {
     if (subscription) {
       _unsubscribe();
     } else {
+      if (isMock) mockfn();
       _subscribe();
     }
   };
 
-  const _setMagnetometerSpeed = () => {
+  const _slow = () => {
+    Magnetometer.setUpdateInterval(1000);
+  };
+
+  const _fast = () => {
     Magnetometer.setUpdateInterval(50);
   };
 
@@ -67,13 +69,14 @@ export default function App() {
     setSubscription(null);
   };
 
+  let updateCount = 0;
+  let partialCompass = { x: 0, y: 0, z: 0 };
+  let isMock = false;
+
   useEffect(() => {
-    // run on App load
     async function findCoordinates() {
-      // wait for the App to get the current position
       navigator.geolocation.getCurrentPosition(
         position => {
-          // once we get the position, save it and get an array of peaks in range
           const newCurrentCoordinates = { lat: position.coords.latitude, long: position.coords.longitude };
           setCurrentCoordinates(newCurrentCoordinates);
   
@@ -84,24 +87,16 @@ export default function App() {
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
       );
     };
-
     findCoordinates();
 
-    _setMagnetometerSpeed();
-    _toggleMagnetometer();
+    // _fast();
+    _toggle();
     return () => {
       _unsubscribe();
     };
     // LPF.init([]);
     // LPF.smoothing = 0.3;
   }, []);
-  
-  // const mockfn = () => {
-  //   const newDegree = 315;
-  //   setCurrentAngle(newDegree);
-  //   const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
-  //   setPeaksOnTarget(matches);
-  // }
 
   const setData = (magnetometerResult) => {
     if (updateCount === MAGNETOMETER_AVG_SAMPLE) {
@@ -112,13 +107,13 @@ export default function App() {
       };
       setCompass(newCompass);
 
-      const newAngle = Math.round(LPF.next(getAngle(newCompass)));
-      // const newAngle = getAngle(newCompass);
-      const newDegree = getDegree(newAngle);
-      setCurrentAngle(newDegree);
+      // const newAngle = Math.round(LPF.next(getAngle(newCompass)));
+      // // const newAngle = getAngle(newCompass);
+      // const newDegree = getDegree(newAngle);
+      // setCurrentAngle(newDegree);
 
-      const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
-      setPeaksOnTarget(matches);
+      // const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
+      // setPeaksOnTarget(matches);
 
       // reset partial values
       updateCount = 0;
@@ -135,8 +130,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       {currentCoordinates.lat !== null ? (<Text>Your position is [ {currentCoordinates.lat}, {currentCoordinates.long} ]</Text>) : null}
-      <Text>You are facing [ {getFace(compass)} , angle: {currentAngle} ]</Text>
-      <Text>#Matches: {Object.keys(peaksOnTarget).length}/{Object.keys(peaksInRange).length}</Text>
+      <HeaderInfo compassXYZ={compass} peaksInRange={peaksInRange} />
       <ListOfTargetMountains showList={false} peaksOnTarget={peaksOnTarget} currentCoordinates={currentCoordinates} />
       <DrawPeaksOnTargetInRange drawPeaks={true} peaksToDraw={peaksOnTarget} />
     </View>
