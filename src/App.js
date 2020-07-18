@@ -37,8 +37,12 @@ export default function App() {
   const [peaksInRange, setPeaksInRange] = useState([]);
   const [peaksOnTarget, setPeaksOnTarget] = useState([]);
   const [subscription, setSubscription] = React.useState(null);
+  
+  let updateCount = 0;
+  let partialCompass = { x: 0, y: 0, z: 0 };
+  let isMock = false;
 
-  const _toggle = () => {
+  const _toggleMagnetometer = () => {
     if (subscription) {
       _unsubscribe();
     } else {
@@ -46,11 +50,7 @@ export default function App() {
     }
   };
 
-  const _slow = () => {
-    Magnetometer.setUpdateInterval(1000);
-  };
-
-  const _fast = () => {
+  const _setMagnetometerSpeed = () => {
     Magnetometer.setUpdateInterval(50);
   };
 
@@ -67,30 +67,28 @@ export default function App() {
     setSubscription(null);
   };
 
-  let updateCount = 0;
-  let partialCompass = { x: 0, y: 0, z: 0 };
-  let isMock = false;
-
   useEffect(() => {
-    async function findCoordinates(callback) {
+    // run on App load
+    async function findCoordinates() {
+      // wait for the App to get the current position
       navigator.geolocation.getCurrentPosition(
         position => {
+          // once we get the position, save it and get an array of peaks in range
           const newCurrentCoordinates = { lat: position.coords.latitude, long: position.coords.longitude };
           setCurrentCoordinates(newCurrentCoordinates);
   
           const newPeaks = getPeaksInRange(listOfPeaks, newCurrentCoordinates, isMock);
           setPeaksInRange(newPeaks);
-  
-          // callback();
         },
         error => Alert.alert(error.message),
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
       );
     };
-    findCoordinates(findXYZ);
 
-    _fast();
-    _toggle();
+    findCoordinates();
+
+    _setMagnetometerSpeed();
+    _toggleMagnetometer();
     return () => {
       _unsubscribe();
     };
@@ -98,53 +96,12 @@ export default function App() {
     // LPF.smoothing = 0.3;
   }, []);
   
-
-  const mockfn = () => {
-    const newDegree = 315;
-    setCurrentAngle(newDegree);
-    const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
-    setPeaksOnTarget(matches);
-  }
-      
-  const findXYZ = () => {
-    if (isMock) {
-      mockfn();
-    }
-
-    // Magnetometer.setUpdateInterval(50);
-    // Magnetometer.addListener(xyz => {
-    //   // if (peaksInRange === null) {
-    //   //   setTimeout(1000);
-    //   //   return;
-    //   // }
-    //   // if (updateCount === MAGNETOMETER_AVG_SAMPLE) {
-    //   //   const newCompass = {
-    //   //     x: partialCompass.x / MAGNETOMETER_AVG_SAMPLE,
-    //   //     y: partialCompass.y / MAGNETOMETER_AVG_SAMPLE,
-    //   //     z: partialCompass.z / MAGNETOMETER_AVG_SAMPLE
-    //   //   };
-    //   //   setCompass(newCompass);
-
-    //   //   // const newAngle = Math.round(LPF.next(getAngle(newCompass)));
-    //   //   const newAngle = getAngle(newCompass);
-    //   //   const newDegree = getDegree(newAngle);
-    //   //   setCurrentAngle(newDegree);
-
-    //   //   const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
-    //   //   setPeaksOnTarget(matches);
-
-    //   //   // reset partial values
-    //   //   updateCount = 0;
-    //   //   partialCompass = { x: 0, y: 0, z: 0 };
-    //   // }
-    //   // else {
-    //   //   updateCount += 1
-    //   //   partialCompass.x += xyz.x;
-    //   //   partialCompass.y += xyz.y;
-    //   //   partialCompass.z += xyz.z;
-    //   // }
-    // });
-  }
+  // const mockfn = () => {
+  //   const newDegree = 315;
+  //   setCurrentAngle(newDegree);
+  //   const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
+  //   setPeaksOnTarget(matches);
+  // }
 
   const setData = (magnetometerResult) => {
     if (updateCount === MAGNETOMETER_AVG_SAMPLE) {
