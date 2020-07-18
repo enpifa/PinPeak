@@ -64,6 +64,13 @@ export default function App() {
   };
       
   const findXYZ = () => {
+    if (isMock) {
+      const newDegree = 315;
+      setCurrentAngle(newDegree);
+      const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
+      setPeaksOnTarget(matches);
+    }
+
     Magnetometer.setUpdateInterval(50);
     Magnetometer.addListener(xyz => {
       // if (peaksInRange === null) {
@@ -79,12 +86,11 @@ export default function App() {
         setCompass(newCompass);
 
         const newAngle = Math.round(LPF.next(getAngle(newCompass)));
-        const newDegree = getDegree(newAngle, isMock);
+        const newDegree = getDegree(newAngle);
         setCurrentAngle(newDegree);
 
-        const matches = getPeaksOnTarget(newDegree, peaksInRange);
+        const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
         setPeaksOnTarget(matches);
-        // setPositionOfPeaksOnTarget(positions);
 
         // reset partial values
         updateCount = 0;
@@ -97,15 +103,11 @@ export default function App() {
         partialCompass.z += xyz.z;
       }
     });
-    // Magnetometer.removeAllListeners();
   }
-
-  // const [mock1, mock2] = findAngleMatch(315, peaksInRange, currentCoordinates);
       
   return (
     <View style={styles.container}>
       {currentCoordinates.lat !== null ? (<Text>Your position is [ {currentCoordinates.lat}, {currentCoordinates.long} ]</Text>) : null}
-      {/* {compass.x !== null ? (<Text>[ {compass.x.toFixed(3)} | {compass.y.toFixed(3)} | {compass.z.toFixed(3)} ]</Text>) : null} */}
       <Text>You are facing [ {getFace(compass)} , angle: {currentAngle} ]</Text>
       <Text>#Matches: {Object.keys(peaksOnTarget).length}/{Object.keys(peaksInRange).length}</Text>
       <ListOfTargetMountains showList={false} peaksOnTarget={peaksOnTarget} currentCoordinates={currentCoordinates} />

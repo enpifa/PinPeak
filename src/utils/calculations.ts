@@ -52,7 +52,7 @@ const getAngle = (magnetometer: ICompass) => {
  * @param angle original angle
  * @param isMock used to debug the app with mock data
  */
-const getDegree = (angle: number, isMock: boolean): number => {
+const getDegree = (angle: number): number => {
   return angle - 90 >= 0
     ? angle - 90
     : angle + 271;
@@ -86,7 +86,9 @@ const getFace = (compass) => {
   return newDirection;
 };
 
-const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[]): IPeakOnTarget[] => {
+const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[], isMock: boolean): IPeakOnTarget[] => {
+  if (isMock) return [{ peak: peaksInRange[0], horizontalPosition: (peaksInRange[0].angle - myAngle - ANGLE_THRESHOLD) / (2 * ANGLE_THRESHOLD)}]
+
   if (peaksInRange === []) return [];
 
   const result = peaksInRange.reduce((acc, peak) => {
@@ -110,6 +112,11 @@ const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[]): IPeakO
   return result;
 };
 
+/**
+ * Calculate the distance (in km) between two points.
+ * @param pointA 
+ * @param pointB 
+ */
 const calculateDistanceBetweenAB = (pointA: ICoordinates, pointB: ICoordinates): number => {
   // This uses the ‘haversine’ formula to calculate the great-circle distance between two points 
   // – that is, the shortest distance over the earth’s surface – giving an ‘as-the-crow-flies’ 
