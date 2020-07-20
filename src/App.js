@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Alert, Dimensions } from 'react-native';
 import { Magnetometer } from 'expo-sensors';
 import Constants from 'expo-constants';
-import LPF from 'lpf';
-import listOfPeaks from './ListOfPeaks.json';
-import { getAngle, getDegree, getFace, getPeaksOnTarget, getPeaksInRange } from './utils/calculations';
-import ListOfTargetMountains from './components/ListOfTargetMountains';
-import DrawPeaksOnTargetInRange from './components/DrawPeaksOnTargetInRange';
+// import LPF from 'lpf';
+
+// import ListOfTargetMountains from './components/ListOfTargetMountains';
+// import DrawPeaks from './components/DrawPeaks';
 import HeaderInfo from './components/HeaderInfo';
+import PeaksOnTargetInfo from './components/PeaksOnTargetInfo';
+
+import listOfPeaks from './ListOfPeaks.json';
+import { getAngle, getDegree, getPeaksInRange } from './utils/calculations';
 import { MAGNETOMETER_AVG_SAMPLE, PEAK_SHOW_MODE } from './constants/constants';
-// import {magnetometer, SensorTypes, setUpdateIntervalForType} from "react-native-sensors";
-// import Geolocation from '@react-native-community/geolocation';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +37,7 @@ export default function App() {
   const [currentCoordinates, setCurrentCoordinates] = useState(initialCoordinates);
   const [currentAngle, setCurrentAngle] = useState(null);
   const [peaksInRange, setPeaksInRange] = useState([]);
-  const [peaksOnTarget, setPeaksOnTarget] = useState([]);
+  // const [peaksOnTarget, setPeaksOnTarget] = useState([]);
   const [subscription, setSubscription] = React.useState(null);
 
   const _toggle = () => {
@@ -108,9 +109,9 @@ export default function App() {
       setCompass(newCompass);
 
       // const newAngle = Math.round(LPF.next(getAngle(newCompass)));
-      // // const newAngle = getAngle(newCompass);
-      // const newDegree = getDegree(newAngle);
-      // setCurrentAngle(newDegree);
+      const newAngle = getAngle(newCompass);
+      const newDegree = getDegree(newAngle);
+      setCurrentAngle(newDegree);
 
       // const matches = getPeaksOnTarget(newDegree, peaksInRange, isMock);
       // setPeaksOnTarget(matches);
@@ -129,10 +130,9 @@ export default function App() {
       
   return (
     <View style={styles.container}>
-      {currentCoordinates.lat !== null ? (<Text>Your position is [ {currentCoordinates.lat}, {currentCoordinates.long} ]</Text>) : null}
-      <HeaderInfo compassXYZ={compass} peaksInRange={peaksInRange} />
-      <ListOfTargetMountains showList={false} peaksOnTarget={peaksOnTarget} currentCoordinates={currentCoordinates} />
-      <DrawPeaksOnTargetInRange drawPeaks={false} peaksInRange={peaksInRange} />
+      <HeaderInfo angle={currentAngle} compassXYZ={compass} coordinates={currentCoordinates} />
+      {/* <ListOfTargetMountains showList={false} peaksOnTarget={peaksOnTarget} currentCoordinates={currentCoordinates} />
+      <DrawPeaks drawPeaks={false} peaksInRange={peaksInRange} /> */}
       <PeaksOnTargetInfo angle={currentAngle} peaksInRange={peaksInRange} show={true} showMode={PEAK_SHOW_MODE.list}/>
     </View>
   );

@@ -42,12 +42,12 @@ const renderedPeaks = (peaksToDraw: IPeakOnTarget[]):React.ReactNode[] => {
   });
 };
 
-interface IDrawPeaksOnTargetInRange {
+interface IDrawPeaks {
   drawPeaks: boolean;
   peaksToDraw: IPeakOnTarget[];
 }
 
-const DrawPeaksOnTargetInRange: React.FC<IDrawPeaksOnTargetInRange> = ({ drawPeaks, peaksToDraw }) => {
+const DrawPeaks: React.FC<IDrawPeaks> = ({ drawPeaks, peaksToDraw }) => {
   return (
     <>
     {drawPeaks ? renderedPeaks(peaksToDraw) : null}
@@ -55,4 +55,4 @@ const DrawPeaksOnTargetInRange: React.FC<IDrawPeaksOnTargetInRange> = ({ drawPea
   );
 };
 
-export default DrawPeaksOnTargetInRange;
+export default DrawPeaks;

@@ -38,12 +38,14 @@ const getTopPeaksOnTarget = (peaksOnTarget: IPeakOnTarget[]) => {
 }
 
 const PeaksOnTargetInfo: React.FC<IPeaksOnTargetInfo> = ({ angle, peaksInRange, show, showMode }) => {
+  const peaksInRangeMsg = `Peaks in Range (km): ${peaksInRange.length}`;
   const matchesOnTarget = getPeaksOnTarget(angle, peaksInRange, false);
-  const matchesMessage = `Peaks on Target (angle): ${matchesOnTarget.length}`
+  const matchesMsg = `Peaks on Target (angle): ${matchesOnTarget.length}`;
 
   return (
     <>
-      <Text>{matchesMessage}</Text>
+      <Text>{peaksInRangeMsg}</Text>
+      <Text>{matchesMsg}</Text>
       {show && showMode === PEAK_SHOW_MODE.list ? getTopPeaksOnTarget(matchesOnTarget) : null}
       {show && showMode === PEAK_SHOW_MODE.graph ? <DrawPeaks drawPeaks={show} peaksToDraw={matchesOnTarget} /> : null}
     </>  

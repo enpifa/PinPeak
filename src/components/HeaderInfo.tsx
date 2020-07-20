@@ -1,7 +1,6 @@
 import React from 'react';
-import { ICompass, IPeakInRange } from '../constants/Interfaces';
-import { getAngle, getDegree, getFace, getPeaksOnTarget, getPeaksInRange } from '../utils/calculations';
-import PeaksOnTargetInfo from './PeaksOnTargetInfo';
+import { ICompass, ICoordinates } from '../constants/Interfaces';
+import { getFace } from '../utils/calculations';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import LPF from 'lpf';
 
@@ -15,22 +14,22 @@ const styles = StyleSheet.create({
 
 interface IHeaderInfo {
   compassXYZ: ICompass;
-  peaksInRange: IPeakInRange[];
+  angle: number;
+  coordinates: ICoordinates;
 }
 
-const HeaderInfo: React.FC<IHeaderInfo> = ({ compassXYZ, peaksInRange }) => {
-  // const newAngle = Math.round(LPF.next(getAngle(compassXYZ)));
-  const newAngle = getAngle(compassXYZ);
-  const currentAngle = getDegree(newAngle);
-  const angleMessage = compassXYZ.x === null 
+const HeaderInfo: React.FC<IHeaderInfo> = ({ compassXYZ, angle, coordinates }) => {
+  const coordinatesMsg = coordinates.lat !== null
+  ? `Your position is [ ${coordinates.lat.toFixed(4)}, ${coordinates.long.toFixed(4)} ]`
+  : `Finding coordinates...`;
+  const angleMsg = compassXYZ.x === null || angle === null
     ? 'Compass not active' 
-    : `You are facing [ ${getFace(compassXYZ)} , angle: ${currentAngle.toFixed(1)} ]`;
-  const peaksInRangeMessage = `Peaks in Range (km): ${peaksInRange.length}`;
+    : `You are facing [ ${getFace(compassXYZ)} , angle: ${angle.toFixed(1)} ]`;
 
   return (
     <>
-      <Text>{angleMessage}</Text>
-      <Text>{peaksInRangeMessage}</Text>
+      <Text>{coordinatesMsg}</Text>
+      <Text>{angleMsg}</Text>
     </>  
   );
 };
