@@ -8,7 +8,7 @@ import { getAngle, getDegree, getFace, getPeaksOnTarget, getPeaksInRange } from 
 import ListOfTargetMountains from './components/ListOfTargetMountains';
 import DrawPeaksOnTargetInRange from './components/DrawPeaksOnTargetInRange';
 import HeaderInfo from './components/HeaderInfo';
-import { MAGNETOMETER_AVG_SAMPLE } from './constants/constants';
+import { MAGNETOMETER_AVG_SAMPLE, PEAK_SHOW_MODE } from './constants/constants';
 // import {magnetometer, SensorTypes, setUpdateIntervalForType} from "react-native-sensors";
 // import Geolocation from '@react-native-community/geolocation';
 
@@ -132,7 +132,8 @@ export default function App() {
       {currentCoordinates.lat !== null ? (<Text>Your position is [ {currentCoordinates.lat}, {currentCoordinates.long} ]</Text>) : null}
       <HeaderInfo compassXYZ={compass} peaksInRange={peaksInRange} />
       <ListOfTargetMountains showList={false} peaksOnTarget={peaksOnTarget} currentCoordinates={currentCoordinates} />
-      <DrawPeaksOnTargetInRange drawPeaks={true} peaksToDraw={peaksOnTarget} />
+      <DrawPeaksOnTargetInRange drawPeaks={false} peaksInRange={peaksInRange} />
+      <PeaksOnTargetInfo angle={currentAngle} peaksInRange={peaksInRange} show={true} showMode={PEAK_SHOW_MODE.list}/>
     </View>
   );
 }

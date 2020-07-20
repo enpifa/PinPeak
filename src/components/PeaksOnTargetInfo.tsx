@@ -1,8 +1,10 @@
 import React from 'react';
 import { ICompass, IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
+import { PEAK_SHOW_MODE } from '../constants/constants';
 import { getAngle, getDegree, getFace, getPeaksOnTarget, getPeaksInRange } from '../utils/calculations';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import LPF from 'lpf';
+import DrawPeaks from './DrawPeaks';
 
 const styles = StyleSheet.create({
   singlePeakContainer: {
@@ -15,6 +17,8 @@ const styles = StyleSheet.create({
 interface IPeaksOnTargetInfo {
   angle: number;
   peaksInRange: IPeakInRange[];
+  show: boolean;
+  showMode: string;
 }
 
 const getTopPeaksOnTarget = (peaksOnTarget: IPeakOnTarget[]) => {
@@ -33,14 +37,15 @@ const getTopPeaksOnTarget = (peaksOnTarget: IPeakOnTarget[]) => {
   });
 }
 
-const PeaksOnTargetInfo: React.FC<IPeaksOnTargetInfo> = ({ angle, peaksInRange }) => {
-  const matches = getPeaksOnTarget(angle, peaksInRange, false);
-  const matchesMessage = `Peaks on Target (angle): ${matches.length}`
+const PeaksOnTargetInfo: React.FC<IPeaksOnTargetInfo> = ({ angle, peaksInRange, show, showMode }) => {
+  const matchesOnTarget = getPeaksOnTarget(angle, peaksInRange, false);
+  const matchesMessage = `Peaks on Target (angle): ${matchesOnTarget.length}`
 
   return (
     <>
       <Text>{matchesMessage}</Text>
-      {getTopPeaksOnTarget(matches)}
+      {show && showMode === PEAK_SHOW_MODE.list ? getTopPeaksOnTarget(matchesOnTarget) : null}
+      {show && showMode === PEAK_SHOW_MODE.graph ? <DrawPeaks drawPeaks={show} peaksToDraw={matchesOnTarget} /> : null}
     </>  
   );
 };

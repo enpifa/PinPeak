@@ -31,7 +31,6 @@ const HeaderInfo: React.FC<IHeaderInfo> = ({ compassXYZ, peaksInRange }) => {
     <>
       <Text>{angleMessage}</Text>
       <Text>{peaksInRangeMessage}</Text>
-      <PeaksOnTargetInfo angle={currentAngle} peaksInRange={peaksInRange} />
     </>  
   );
 };

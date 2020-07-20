@@ -20,7 +20,7 @@ const getVerticalPosition = (peakToDraw: IPeakOnTarget) => {
   return { top: peakToDraw.peak.distance / 200 * Dimensions.get('window').height };
 };
 
-const renderedPeaks = (peaksToDraw: IPeakOnTarget[]) => {
+const renderedPeaks = (peaksToDraw: IPeakOnTarget[]):React.ReactNode[] => {
   if (!peaksToDraw) return null;
 
   return peaksToDraw.map(peak => {
@@ -34,8 +34,8 @@ const renderedPeaks = (peaksToDraw: IPeakOnTarget[]) => {
     return (
       <View key={key} style={[styles.singlePeakContainer, styleHorizontal, styleVertical]}>
         <Text>{peakName}</Text>
-        <Text>{peakDistance}km away</Text>
-        <Text>{peakAngle}˚</Text>
+        <Text>{peakDistance.toFixed(2)}km away</Text>
+        <Text>{peakAngle.toFixed(1)}˚</Text>
         <Text>{peakSize}ft</Text>
       </View>
     );
