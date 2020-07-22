@@ -37,17 +37,31 @@ const getTopPeaksOnTarget = (peaksOnTarget: IPeakOnTarget[]) => {
   });
 }
 
+const findLongestDistance = (peaksInRange: IPeakInRange[]): number => {
+  if (peaksInRange.length === 0) return null;
+
+  return peaksInRange.reduce((currentLongest, peak) => {
+    if (peak.distance > currentLongest) return peak.distance;
+
+    return currentLongest;
+  }, 0);
+};
+
 const PeaksOnTargetInfo: React.FC<IPeaksOnTargetInfo> = ({ angle, peaksInRange, show, showMode }) => {
   const peaksInRangeMsg = `Peaks in Range (km): ${peaksInRange.length}`;
   const matchesOnTarget = getPeaksOnTarget(angle, peaksInRange, false);
   const matchesMsg = `Peaks on Target (angle): ${matchesOnTarget.length}`;
+  const longestDistance = findLongestDistance(peaksInRange);
 
   return (
     <>
       <Text>{peaksInRangeMsg}</Text>
       <Text>{matchesMsg}</Text>
       {show && showMode === PEAK_SHOW_MODE.list ? getTopPeaksOnTarget(matchesOnTarget) : null}
-      {show && showMode === PEAK_SHOW_MODE.graph ? <DrawPeaks drawPeaks={show} peaksToDraw={matchesOnTarget} /> : null}
+      {show && showMode === PEAK_SHOW_MODE.graph 
+        ? <DrawPeaks drawPeaks={show} peaksToDraw={matchesOnTarget} angle={angle} distance={longestDistance} /> 
+        : null
+      }
     </>  
   );
 };

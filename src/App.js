@@ -44,7 +44,6 @@ export default function App() {
     if (subscription) {
       _unsubscribe();
     } else {
-      if (isMock) mockfn();
       _subscribe();
     }
   };
@@ -133,7 +132,7 @@ export default function App() {
       <HeaderInfo angle={currentAngle} compassXYZ={compass} coordinates={currentCoordinates} />
       {/* <ListOfTargetMountains showList={false} peaksOnTarget={peaksOnTarget} currentCoordinates={currentCoordinates} />
       <DrawPeaks drawPeaks={false} peaksInRange={peaksInRange} /> */}
-      <PeaksOnTargetInfo angle={currentAngle} peaksInRange={peaksInRange} show={true} showMode={PEAK_SHOW_MODE.list}/>
+      <PeaksOnTargetInfo angle={currentAngle} peaksInRange={peaksInRange} show={true} showMode={PEAK_SHOW_MODE.graph}/>
     </View>
   );
 }
