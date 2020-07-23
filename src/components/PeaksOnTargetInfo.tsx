@@ -49,7 +49,7 @@ const findLongestDistance = (peaksInRange: IPeakInRange[]): number => {
 
 const PeaksOnTargetInfo: React.FC<IPeaksOnTargetInfo> = ({ angle, peaksInRange, show, showMode }) => {
   const peaksInRangeMsg = `Peaks in Range (km): ${peaksInRange.length}`;
-  const matchesOnTarget = getPeaksOnTarget(angle, peaksInRange, false);
+  const matchesOnTarget = getPeaksOnTarget(angle, peaksInRange, true);
   const matchesMsg = `Peaks on Target (angle): ${matchesOnTarget.length}`;
   const longestDistance = findLongestDistance(peaksInRange);
 

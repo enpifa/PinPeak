@@ -1,19 +1,7 @@
-import { ICompass, ICoordinates, IPeaks, IPeakToDraw, IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
+import { ICompass, ICoordinates, IPeaks, IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
 import { ANGLE_THRESHOLD, PEAK_IN_RANGE_THRESHOLD } from '../constants/constants';
 
-const mockPeak = {
-  peak: 'Longs Peak',
-  peakInfo: {
-    "Rank": 15,
-    "Category Rank": 15,
-    "Elevation": 14255,
-    "Range": "Front Range",
-    "Latitude": 40.255,
-    "Longitude": -105.6151
-  },
-  distance: 50,
-  angle: 310
-};
+import { mockPeak } from '../mocks/mockPeaksInRange';
 
 const comparePoints = (currentPosition: ICoordinates, target: ICoordinates) => {
   const x = target.long - currentPosition.long;
@@ -101,10 +89,11 @@ const getFace = (compass) => {
 };
 
 const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[], isMock: boolean): IPeakOnTarget[] => {
-  if (isMock) return [{ peak: mockPeak, horizontalPosition: (mockPeak.angle - (315 - ANGLE_THRESHOLD)) / (2 * ANGLE_THRESHOLD)}]
+  if (isMock) return [{ peak: mockPeak[0], horizontalPosition: (mockPeak[0].angle - (315 - ANGLE_THRESHOLD)) / (2 * ANGLE_THRESHOLD)}]
   if (peaksInRange.length === 0) return [];
 
   const result = peaksInRange.reduce((acc, peak) => {
+    // TODO: fix angles that cross 360 degrees
     const myMinAngle = myAngle < ANGLE_THRESHOLD ? 0 : myAngle - ANGLE_THRESHOLD;
     const myMaxAngle = myAngle + ANGLE_THRESHOLD;
 
@@ -156,7 +145,7 @@ const calculateDistanceBetweenAB = (pointA: ICoordinates, pointB: ICoordinates):
  * @param currentCoordinates 
  */
 const getPeaksInRange = (allThePeaks: IPeaks, currentCoordinates: ICoordinates, isMock: boolean): IPeakInRange[] => {
-  if (isMock) return [mockPeak];
+  if (isMock) return mockPeak;
 
   if (!allThePeaks) return [];
 
