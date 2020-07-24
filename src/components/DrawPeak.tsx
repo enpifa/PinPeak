@@ -55,15 +55,15 @@ const DrawPeak: React.FC<IDrawPeak> = ({ maxDistance, peakToDraw, gridSize, inde
 
   return (
     <View key={key} style={[styles.singlePeakContainer, styleHorizontal, styleVertical]}>
-      <Text>{peakName}</Text>
-      <Text>{peakDistance.toFixed(2)}km</Text>
+      {/* <Text>{peakName}</Text>
+      <Text>{peakDistance.toFixed(2)}km</Text> */}
       {/* <Text>{peakAngle.toFixed(1)}˚</Text> */}
       {/* <Text>{peakSize} ft</Text> */}
       {/* <Text>left: {styleHorizontal.left.toFixed(2)}</Text> */}
       <Text>top: {styleVertical.top.toFixed(2)}</Text>
-      <Text>max: {maxDistance.toFixed(2)}</Text>
+      {/* <Text>max: {maxDistance.toFixed(2)}</Text>
       <Text>H: {gridSize.height.toFixed(2)}</Text>
-      <Text>Win: {Dimensions.get('window').height.toFixed(2)}</Text>
+      <Text>Win: {Dimensions.get('window').height.toFixed(2)}</Text> */}
       {/* <Text>x</Text> */}
     </View>
   );
