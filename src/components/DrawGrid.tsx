@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
   }
 });
 
-interface IDrawLegend {
+interface IDrawGrid {
   peaksToDraw: IPeakOnTarget[];
   maxDistance: number;
 }
 
-const DrawLegend: React.FC<IDrawLegend> = ({ maxDistance, peaksToDraw }) => {
+const DrawGrid: React.FC<IDrawGrid> = ({ maxDistance, peaksToDraw }) => {
   const [gridSize, setGridSize] = useState<LayoutRectangle>();
 
   return (
@@ -38,12 +38,13 @@ const DrawLegend: React.FC<IDrawLegend> = ({ maxDistance, peaksToDraw }) => {
       setGridSize(event.nativeEvent.layout);
     }}>
       {peaksToDraw.map((peakToDraw, index) => {
+        const key = `${index}-${peakToDraw.peak}`;
         return (
-          <DrawPeak peakToDraw={peakToDraw} maxDistance={maxDistance} gridSize={gridSize} index={index * 2} />
+          <DrawPeak key={key} peakToDraw={peakToDraw} maxDistance={maxDistance} gridSize={gridSize} index={index * 2} />
         )
       })}
     </View>
   );
 };
 
-export default DrawLegend;
+export default DrawGrid;
