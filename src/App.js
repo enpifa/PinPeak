@@ -71,7 +71,7 @@ export default function App() {
 
   let updateCount = 0;
   let partialCompass = { x: 0, y: 0, z: 0 };
-  let isMock = true;
+  let isMock = false;
 
   useEffect(() => {
     async function findCoordinates() {
