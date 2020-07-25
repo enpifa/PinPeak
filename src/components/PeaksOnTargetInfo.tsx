@@ -1,16 +1,16 @@
 import React from 'react';
-import { ICompass, IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
+import { IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
 import { PEAK_SHOW_MODE } from '../constants/constants';
-import { getAngle, getDegree, getFace, getPeaksOnTarget, getPeaksInRange } from '../utils/calculations';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
-import LPF from 'lpf';
-import DrawPeaks from './DrawPeaks';
+import { getPeaksOnTarget } from '../utils/calculations';
+import { View, Text, StyleSheet } from 'react-native';
+import DrawPeaksOnTarget from './DrawPeaksOnTarget';
+import ListOfPeaksOnTarget from './ListOfPeaksOnTarget';
 
 const styles = StyleSheet.create({
-  singlePeakContainer: {
-    flex: 1,
-    position: 'absolute',
-    top: 150
+  peaksInfoContainer: {
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
@@ -19,22 +19,6 @@ interface IPeaksOnTargetInfo {
   peaksInRange: IPeakInRange[];
   show: boolean;
   showMode: string;
-}
-
-const getTopPeaksOnTarget = (peaksOnTarget: IPeakOnTarget[]) => {
-  if (peaksOnTarget.length === 0) return null;
-
-  return peaksOnTarget.map((peak, index) => {
-    const peakName = peak.peak.peak;
-    const peakDistance = peak.peak.distance.toFixed(2);
-    const peakAngle = peak.peak.angle.toFixed(1);
-    const peakSize = peak.peak.peakInfo.Elevation;
-    const key = `${peakName}-${peakAngle}-${peakDistance}`;
-    const message = `${index+1}) ${peakName} | ${peakDistance}km | ${peakAngle}˚ | ${peakSize}ft`
-    return (
-      <Text key={key}>{message}</Text>
-    );
-  });
 }
 
 const findLongestDistance = (peaksInRange: IPeakInRange[]): number => {
@@ -55,14 +39,16 @@ const PeaksOnTargetInfo: React.FC<IPeaksOnTargetInfo> = ({ angle, peaksInRange, 
 
   return (
     <>
-      <Text>{peaksInRangeMsg}</Text>
-      <Text>{matchesMsg}</Text>
-      {show && showMode === PEAK_SHOW_MODE.list ? getTopPeaksOnTarget(matchesOnTarget) : null}
+      <View style={styles.peaksInfoContainer}>
+        <Text>{peaksInRangeMsg}</Text>
+        <Text>{matchesMsg}</Text>
+      </View>
+      {show && showMode === PEAK_SHOW_MODE.list ? <ListOfPeaksOnTarget peaksToList={matchesOnTarget} /> : null}
       {show && showMode === PEAK_SHOW_MODE.graph 
-        ? <DrawPeaks drawPeaks={show} peaksToDraw={matchesOnTarget} angle={angle} distance={longestDistance} /> 
+        ? <DrawPeaksOnTarget drawPeaks={show} peaksToDraw={matchesOnTarget} angle={angle} distance={longestDistance} /> 
         : null
       }
-    </>  
+    </>
   );
 };
 

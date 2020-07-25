@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
   grid: {
     flex: 1,
     position: 'absolute',
-    top: top,
-    height: Dimensions.get('window').height - top - bottom,
+    left: left,
+    top: 20,
     width: Dimensions.get('window').width - left - right,
     borderLeftColor: 'black',
     borderLeftWidth: 1,
@@ -27,14 +27,18 @@ const styles = StyleSheet.create({
 interface IDrawGrid {
   peaksToDraw: IPeakOnTarget[];
   maxDistance: number;
+  size: LayoutRectangle;
 }
 
-const DrawGrid: React.FC<IDrawGrid> = ({ maxDistance, peaksToDraw }) => {
+const DrawGrid: React.FC<IDrawGrid> = ({ maxDistance, peaksToDraw, size }) => {
   const [gridSize, setGridSize] = useState<LayoutRectangle>();
+  const initialY = size ? size.y : 0;
+  const marginTop = 20;
+  const extraPaddingBottom = 40;
+  const styleHeight = { height: Dimensions.get('window').height - initialY - marginTop - extraPaddingBottom };
 
   return (
-    <View style={styles.grid} onLayout={(event) => {
-      // console.log(event.nativeEvent.layout);
+    <View style={[styles.grid, styleHeight]} onLayout={(event) => {
       setGridSize(event.nativeEvent.layout);
     }}>
       {peaksToDraw.map((peakToDraw, index) => {

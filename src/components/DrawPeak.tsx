@@ -20,20 +20,26 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderRadius: 5,
     padding: 2,
-    position: 'relative',
-    alignSelf: 'flex-start'
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    backgroundColor: 'white'
   }
 });
 
-const getHorizontalPosition = (horizontalPosition: number, width: number, index: number) => {
-  if (!horizontalPosition) return { left: 0 };
+const getHorizontalPosition = (horizontalPosition: number, size: LayoutRectangle, index: number) => {
+  if (!horizontalPosition || !size) return { left: 0 };
+
+  const { width } = size;
+
   return { left: horizontalPosition * width, zIndex: index };
 };
 
-const getVerticalPosition = (peakDistance: number, maxDistance: number, height: number, positionY: number) => {
-  if (!peakDistance || !maxDistance) return { top: 0 };
+const getVerticalPosition = (peakDistance: number, maxDistance: number, size: LayoutRectangle) => {
+  if (!peakDistance || !maxDistance || !size) return { top: 0 };
 
+  const { height, y } = size;
   const topDistance = (1 - (peakDistance / maxDistance)) * height;
+
   return { top: topDistance };
 };
 
@@ -45,8 +51,8 @@ interface IDrawPeak {
 }
 
 const DrawPeak: React.FC<IDrawPeak> = ({ maxDistance, peakToDraw, gridSize, index }) => {
-  const styleHorizontal = getHorizontalPosition(peakToDraw.horizontalPosition, gridSize.width, index);
-  const styleVertical = getVerticalPosition(peakToDraw.peak.distance, maxDistance, gridSize.height, gridSize.y);
+  const styleHorizontal = getHorizontalPosition(peakToDraw.horizontalPosition, gridSize, index);
+  const styleVertical = getVerticalPosition(peakToDraw.peak.distance, maxDistance, gridSize);
   const peakName = peakToDraw.peak.peak;
   const peakDistance = peakToDraw.peak.distance;
   const peakAngle = peakToDraw.peak.angle;
@@ -55,11 +61,11 @@ const DrawPeak: React.FC<IDrawPeak> = ({ maxDistance, peakToDraw, gridSize, inde
 
   return (
     <View key={key} style={[styles.singlePeakContainer, styleHorizontal, styleVertical]}>
-      {/* <Text>{peakName}</Text>
-      <Text>{peakDistance.toFixed(2)}km</Text> */}
-      {/* <Text>{peakAngle.toFixed(1)}˚</Text> */}
-      {/* <Text>{peakSize} ft</Text> */}
-      {/* <Text>left: {styleHorizontal.left.toFixed(2)}</Text> */}
+      <Text>{peakName}</Text>
+      <Text>{peakDistance.toFixed(2)}km</Text>
+      <Text>{peakAngle.toFixed(1)}˚</Text>
+      <Text>{peakSize} ft</Text>
+      {/* <Text>left: {styleHorizontal.left.toFixed(2)}</Text>
       <Text>top: {styleVertical.top.toFixed(2)}</Text>
       {/* <Text>max: {maxDistance.toFixed(2)}</Text>
       <Text>H: {gridSize.height.toFixed(2)}</Text>

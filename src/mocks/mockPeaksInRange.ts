@@ -1,4 +1,5 @@
 import { IPeakInRange } from '../constants/Interfaces';
+import { ANGLE_THRESHOLD } from '../constants/constants';
 
 export const mockPeak: IPeakInRange[] = [
   {
@@ -80,3 +81,25 @@ export const mockPeak: IPeakInRange[] = [
     angle: 245
   },
 ];
+
+export const mockGetPeaksOnTarget = () => {
+  const myAngle = 245;
+  return mockPeak.reduce((acc, peak) => {
+    // TODO: fix angles that cross 360 degrees
+    const myMinAngle = myAngle < ANGLE_THRESHOLD ? 0 : myAngle - ANGLE_THRESHOLD;
+    const myMaxAngle = myAngle + ANGLE_THRESHOLD;
+
+    // verify the peak is within my min and max range of view
+    if (peak.angle > myMinAngle && peak.angle < myMaxAngle) {
+      return [
+        ...acc,
+        {
+          peak: peak,
+          horizontalPosition: (peak.angle - myMinAngle) / (2 * ANGLE_THRESHOLD)
+        }
+      ];
+    }
+
+    return acc;
+  }, []);
+}

@@ -5,10 +5,10 @@ import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import LPF from 'lpf';
 
 const styles = StyleSheet.create({
-  singlePeakContainer: {
-    flex: 1,
-    position: 'absolute',
-    top: 150
+  headerInfoContainer: {
+    // position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
@@ -27,10 +27,10 @@ const HeaderInfo: React.FC<IHeaderInfo> = ({ compassXYZ, angle, coordinates }) =
     : `You are facing [ ${getFace(compassXYZ)} , angle: ${angle.toFixed(1)} ]`;
 
   return (
-    <>
+    <View style={styles.headerInfoContainer}>
       <Text>{coordinatesMsg}</Text>
       <Text>{angleMsg}</Text>
-    </>  
+    </View>  
   );
 };
 

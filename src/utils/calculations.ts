@@ -1,7 +1,7 @@
 import { ICompass, ICoordinates, IPeaks, IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
 import { ANGLE_THRESHOLD, PEAK_IN_RANGE_THRESHOLD } from '../constants/constants';
 
-import { mockPeak } from '../mocks/mockPeaksInRange';
+import { mockPeak, mockGetPeaksOnTarget } from '../mocks/mockPeaksInRange';
 
 const comparePoints = (currentPosition: ICoordinates, target: ICoordinates) => {
   const x = target.long - currentPosition.long;
@@ -89,7 +89,7 @@ const getFace = (compass) => {
 };
 
 const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[], isMock: boolean): IPeakOnTarget[] => {
-  if (isMock) return [{ peak: mockPeak[0], horizontalPosition: (mockPeak[0].angle - (315 - ANGLE_THRESHOLD)) / (2 * ANGLE_THRESHOLD)}]
+  if (isMock) return mockGetPeaksOnTarget();
   if (peaksInRange.length === 0) return [];
 
   const result = peaksInRange.reduce((acc, peak) => {
