@@ -1,12 +1,10 @@
 import React from 'react';
 import { ICompass, ICoordinates } from '../constants/Interfaces';
-import { getFace } from '../utils/calculations';
+import { getDirection } from '../utils/calculations';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
-import LPF from 'lpf';
 
 const styles = StyleSheet.create({
   headerInfoContainer: {
-    // position: 'relative',
     justifyContent: 'center',
     alignItems: 'center'
   }
@@ -24,7 +22,7 @@ const HeaderInfo: React.FC<IHeaderInfo> = ({ compassXYZ, angle, coordinates }) =
   : `Finding coordinates...`;
   const angleMsg = compassXYZ.x === null || angle === null
     ? 'Compass not active' 
-    : `You are facing [ ${getFace(compassXYZ)} , angle: ${angle.toFixed(1)} ]`;
+    : `You are facing [ ${getDirection(angle)} , angle: ${angle.toFixed(1)} ]`;
 
   return (
     <View style={styles.headerInfoContainer}>

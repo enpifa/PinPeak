@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, Dimensions, StyleSheet, LayoutRectangle } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, LayoutRectangle } from 'react-native';
 
 import { IPeakOnTarget } from '../constants/Interfaces';
-
-const top = 170;
-const bottom = 20;
-const left = 10;
-const right = 10;
 
 const styles = StyleSheet.create({
   singlePeakContainer: {
@@ -70,7 +65,6 @@ const DrawPeak: React.FC<IDrawPeak> = ({ maxDistance, peakToDraw, gridSize, inde
       {/* <Text>max: {maxDistance.toFixed(2)}</Text>
       <Text>H: {gridSize.height.toFixed(2)}</Text>
       <Text>Win: {Dimensions.get('window').height.toFixed(2)}</Text> */}
-      {/* <Text>x</Text> */}
     </View>
   );
 };

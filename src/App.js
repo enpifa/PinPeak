@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Dimensions } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { Magnetometer } from 'expo-sensors';
 import Constants from 'expo-constants';
-// import LPF from 'lpf';
+import LPF from 'lpf';
 import HeaderInfo from './components/HeaderInfo';
 import PeaksOnTargetInfo from './components/PeaksOnTargetInfo';
 
@@ -31,7 +31,7 @@ export default function App() {
   const [currentCoordinates, setCurrentCoordinates] = useState(initialCoordinates);
   const [currentAngle, setCurrentAngle] = useState(null);
   const [peaksInRange, setPeaksInRange] = useState([]);
-  const [subscription, setSubscription] = React.useState(null);
+  const [subscription, setSubscription] = useState(null);
 
   const _toggle = () => {
     if (subscription) {
@@ -46,10 +46,11 @@ export default function App() {
   };
 
   const _fast = () => {
-    Magnetometer.setUpdateInterval(50);
+    Magnetometer.setUpdateInterval(40);
   };
 
   const _subscribe = () => {
+    _fast();
     setSubscription(
       Magnetometer.addListener((result) => {
         setData(result);
@@ -87,8 +88,8 @@ export default function App() {
     return () => {
       _unsubscribe();
     };
-    // LPF.init([]);
-    // LPF.smoothing = 0.3;
+    LPF.init([]);
+    LPF.smoothing = 0.3;
   }, []);
 
   const setData = (magnetometerResult) => {

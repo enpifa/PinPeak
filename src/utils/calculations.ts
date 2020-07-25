@@ -82,8 +82,8 @@ const getDirection = (degree: number) => {
 
 const getFace = (compass) => {
   const newAngle = getAngle(compass);
-  const newDegree = getDegree(newAngle);
-  const newDirection = getDirection(newDegree);
+  // const newDegree = getDegree(newAngle);
+  const newDirection = getDirection(newAngle);
 
   return newDirection;
 };
@@ -92,7 +92,7 @@ const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[], isMock:
   if (isMock) return mockGetPeaksOnTarget();
   if (peaksInRange.length === 0) return [];
 
-  const result = peaksInRange.reduce((acc, peak) => {
+  return peaksInRange.reduce((acc, peak) => {
     // TODO: fix angles that cross 360 degrees
     const myMinAngle = myAngle < ANGLE_THRESHOLD ? 0 : myAngle - ANGLE_THRESHOLD;
     const myMaxAngle = myAngle + ANGLE_THRESHOLD;
@@ -110,8 +110,6 @@ const getPeaksOnTarget = (myAngle: number, peaksInRange: IPeakInRange[], isMock:
 
     return acc;
   }, []);
-
-  return result;
 };
 
 /**
