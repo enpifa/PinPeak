@@ -7,8 +7,8 @@ import HeaderInfo from './components/HeaderInfo';
 import PeaksOnTargetInfo from './components/PeaksOnTargetInfo';
 
 import listOfPeaks from './ListOfPeaks.json';
-import { getAngle, getDegree, getPeaksInRange } from './utils/calculations';
-import { MAGNETOMETER_AVG_SAMPLE, PEAK_SHOW_MODE } from './constants/constants';
+import { getAngle, getDegree, getPeaksInRange, updateCompassData } from './utils/calculations';
+import { PEAK_SHOW_MODE } from './constants/constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 // the same way, longitude refers to E/W, which corresponds to the X axis
 
 export default function App() {
-  const initialCompass = {x: null, y: null, z: null};
+  const initialCompass = {x: 0, y: 0, z: 0};
   const initialCoordinates = {lat: null, long: null};
 
   const [compass, setCompass] = useState(initialCompass);
@@ -32,6 +32,8 @@ export default function App() {
   const [currentAngle, setCurrentAngle] = useState(null);
   const [peaksInRange, setPeaksInRange] = useState([]);
   const [subscription, setSubscription] = useState(null);
+  const [magnetometerCount, setMagnetometerCount] = useState(0);
+  const [partialCompass, setPartialCompass] = useState(initialCompass);
 
   const _toggle = () => {
     if (subscription) {
@@ -53,7 +55,10 @@ export default function App() {
     _fast();
     setSubscription(
       Magnetometer.addListener((result) => {
-        setData(result);
+        const newCompass = updateCompassData(result, magnetometerCount, partialCompass);
+
+        if (newCompass !== {}) updateOnThreshold(newCompass);
+        else updateOnNoThreshold();
       })
     );
   };
@@ -63,8 +68,8 @@ export default function App() {
     setSubscription(null);
   };
 
-  let updateCount = 0;
-  let partialCompass = { x: 0, y: 0, z: 0 };
+  // let updateCount = 0;
+  // let partialCompass = { x: 0, y: 0, z: 0 };
   let isMock = false;
 
   useEffect(() => {
@@ -92,30 +97,25 @@ export default function App() {
     LPF.smoothing = 0.3;
   }, []);
 
-  const setData = (magnetometerResult) => {
-    if (updateCount === MAGNETOMETER_AVG_SAMPLE) {
-      const newCompass = {
-        x: partialCompass.x / MAGNETOMETER_AVG_SAMPLE,
-        y: partialCompass.y / MAGNETOMETER_AVG_SAMPLE,
-        z: partialCompass.z / MAGNETOMETER_AVG_SAMPLE
-      };
-      setCompass(newCompass);
+  const updateOnThreshold = (newCompass) => {
+    setCompass(newCompass);
 
-      // const newAngle = Math.round(LPF.next(getAngle(newCompass)));
-      const newAngle = getAngle(newCompass);
-      const newDegree = getDegree(newAngle);
-      setCurrentAngle(newDegree);
+    // const newAngle = Math.round(LPF.next(getAngle(newCompass)));
+    const newAngle = getAngle(newCompass);
+    const newDegree = getDegree(newAngle);
+    setCurrentAngle(newDegree);
 
-      // reset partial values
-      updateCount = 0;
-      partialCompass = { x: 0, y: 0, z: 0 };
-    }
-    else {
-      updateCount += 1
-      partialCompass.x += magnetometerResult.x;
-      partialCompass.y += magnetometerResult.y;
-      partialCompass.z += magnetometerResult.z;
-    }
+    setMagnetometerCount(0);
+    setPartialCompass(initialCompass);
+  };
+
+  const updateOnNoThreshold = () => {
+    setMagnetometerCount(magnetometerCount + 1);
+    setPartialCompass({
+      x: partialCompass.x + result.x,
+      y: partialCompass.y + result.y,
+      z: partialCompass.z + result.z
+    });
   };
       
   return (

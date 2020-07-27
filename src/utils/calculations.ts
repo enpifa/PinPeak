@@ -1,5 +1,5 @@
 import { ICompass, ICoordinates, IPeaks, IPeakInRange, IPeakOnTarget } from '../constants/Interfaces';
-import { ANGLE_THRESHOLD, PEAK_IN_RANGE_THRESHOLD } from '../constants/constants';
+import { ANGLE_THRESHOLD, PEAK_IN_RANGE_THRESHOLD, MAGNETOMETER_AVG_SAMPLE } from '../constants/constants';
 
 import { mockPeak, mockGetPeaksOnTarget } from '../mocks/mockPeaksInRange';
 
@@ -82,8 +82,8 @@ const getDirection = (degree: number) => {
 
 const getFace = (compass) => {
   const newAngle = getAngle(compass);
-  // const newDegree = getDegree(newAngle);
-  const newDirection = getDirection(newAngle);
+  const newDegree = getDegree(newAngle);
+  const newDirection = getDirection(newDegree);
 
   return newDirection;
 };
@@ -170,4 +170,14 @@ const getPeaksInRange = (allThePeaks: IPeaks, currentCoordinates: ICoordinates, 
   return result;
 };
 
-export { comparePoints, getQuadrant, calculateAngle, getAngle, getDegree, getDirection, getFace, getPeaksOnTarget, calculateDistanceBetweenAB, getPeaksInRange };
+const updateCompassData = (magnetometerResult, count: number, partialCompass: ICompass) => {
+  return count === MAGNETOMETER_AVG_SAMPLE
+    ? {
+      x: partialCompass.x / MAGNETOMETER_AVG_SAMPLE,
+      y: partialCompass.y / MAGNETOMETER_AVG_SAMPLE,
+      z: partialCompass.z / MAGNETOMETER_AVG_SAMPLE
+    }
+    : {};
+};
+
+export { comparePoints, getQuadrant, calculateAngle, getAngle, getDegree, getDirection, getFace, getPeaksOnTarget, calculateDistanceBetweenAB, getPeaksInRange, updateCompassData };
