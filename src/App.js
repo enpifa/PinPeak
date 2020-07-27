@@ -46,7 +46,7 @@ export default function App() {
   };
 
   const _fast = () => {
-    Magnetometer.setUpdateInterval(40);
+    Magnetometer.setUpdateInterval(30);
   };
 
   const _subscribe = () => {
@@ -73,31 +73,29 @@ export default function App() {
         position => {
           const newCurrentCoordinates = { lat: position.coords.latitude, long: position.coords.longitude };
           setCurrentCoordinates(newCurrentCoordinates);
-  
+          
           const newPeaks = getPeaksInRange(listOfPeaks, newCurrentCoordinates, isMock);
           setPeaksInRange(newPeaks);
         },
         error => Alert.alert(error.message),
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-      );
-    };
+        );
+      };
     findCoordinates();
-
+      
     // _fast();
     _toggle();
     return () => {
       _unsubscribe();
     };
-    LPF.init([]);
-    LPF.smoothing = 0.3;
   }, []);
 
   const setData = (magnetometerResult) => {
     if (updateCount === MAGNETOMETER_AVG_SAMPLE) {
       const newCompass = {
-        x: partialCompass.x / MAGNETOMETER_AVG_SAMPLE,
-        y: partialCompass.y / MAGNETOMETER_AVG_SAMPLE,
-        z: partialCompass.z / MAGNETOMETER_AVG_SAMPLE
+        x: ((partialCompass.x / MAGNETOMETER_AVG_SAMPLE) + compass.x) / 2,
+        y: ((partialCompass.y / MAGNETOMETER_AVG_SAMPLE) + compass.y) / 2,
+        z: ((partialCompass.z / MAGNETOMETER_AVG_SAMPLE) + compass.z) / 2
       };
       setCompass(newCompass);
 
