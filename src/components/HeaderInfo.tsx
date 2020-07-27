@@ -20,7 +20,7 @@ const HeaderInfo: React.FC<IHeaderInfo> = ({ compassXYZ, angle, coordinates }) =
   const coordinatesMsg = coordinates.lat !== null
   ? `Your position is [ ${coordinates.lat.toFixed(4)}, ${coordinates.long.toFixed(4)} ]`
   : `Finding coordinates...`;
-  const angleMsg = compassXYZ.x === 0 && angle === null
+  const angleMsg = compassXYZ.x === null || angle === null
     ? 'Compass not active' 
     : `You are facing [ ${getDirection(angle)} , angle: ${angle.toFixed(1)} ]`;
 
