@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderBottomColor: 'red',
     borderBottomWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 2,
     position: 'absolute',
     alignSelf: 'flex-start',
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 });
 
 const getHorizontalPosition = (horizontalPosition: number, size: LayoutRectangle, index: number) => {
-  if (!horizontalPosition || !size) return { left: 0 };
+  if (!horizontalPosition || !size) return { left: 0, zIndex: index };
 
   const { width } = size;
 

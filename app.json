@@ -27,7 +27,8 @@
     "githubUrl": "https://github.com/enpifa/PinPeak",
     "description": "Find what mountains you have in front of you!",
     "android": {
-      "package": "com.enpifa.PinPeak"
+      "package": "com.enpifa.PinPeak",
+      "versionCode": 1
     }
   }
 }

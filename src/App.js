@@ -41,19 +41,37 @@ export default function App() {
     }
   };
 
-  const _slow = () => {
-    Magnetometer.setUpdateInterval(1000);
-  };
-
   const _fast = () => {
-    Magnetometer.setUpdateInterval(30);
+    Magnetometer.setUpdateInterval(40);
   };
 
   const _subscribe = () => {
     _fast();
     setSubscription(
-      Magnetometer.addListener((result) => {
-        setData(result);
+      Magnetometer.addListener((magnetometerResult) => {
+        if (updateCount === MAGNETOMETER_AVG_SAMPLE) {
+          const newCompass = {
+            x: ((partialCompass.x / MAGNETOMETER_AVG_SAMPLE) + compass.x) / 2.0,
+            y: ((partialCompass.y / MAGNETOMETER_AVG_SAMPLE) + compass.y) / 2.0,
+            z: ((partialCompass.z / MAGNETOMETER_AVG_SAMPLE) + compass.z) / 2
+          };
+          setCompass(newCompass);
+    
+          // const newAngle = Math.round(LPF.next(getAngle(newCompass)));
+          const newAngle = getAngle(newCompass);
+          const newDegree = getDegree(newAngle);
+          setCurrentAngle(newDegree);
+    
+          // reset partial values
+          updateCount = 0;
+          partialCompass = { x: 0.0, y: 0.0, z: 0.0 };
+        }
+        else {
+          updateCount += 1
+          partialCompass.x += magnetometerResult.x;
+          partialCompass.y += magnetometerResult.y;
+          partialCompass.z += magnetometerResult.z;
+        }
       })
     );
   };
@@ -82,39 +100,12 @@ export default function App() {
         );
       };
     findCoordinates();
-      
-    // _fast();
+
     _toggle();
     return () => {
       _unsubscribe();
     };
   }, []);
-
-  const setData = (magnetometerResult) => {
-    if (updateCount === MAGNETOMETER_AVG_SAMPLE) {
-      const newCompass = {
-        x: ((partialCompass.x / MAGNETOMETER_AVG_SAMPLE) + compass.x) / 2,
-        y: ((partialCompass.y / MAGNETOMETER_AVG_SAMPLE) + compass.y) / 2,
-        z: ((partialCompass.z / MAGNETOMETER_AVG_SAMPLE) + compass.z) / 2
-      };
-      setCompass(newCompass);
-
-      // const newAngle = Math.round(LPF.next(getAngle(newCompass)));
-      const newAngle = getAngle(newCompass);
-      const newDegree = getDegree(newAngle);
-      setCurrentAngle(newDegree);
-
-      // reset partial values
-      updateCount = 0;
-      partialCompass = { x: 0, y: 0, z: 0 };
-    }
-    else {
-      updateCount += 1
-      partialCompass.x += magnetometerResult.x;
-      partialCompass.y += magnetometerResult.y;
-      partialCompass.z += magnetometerResult.z;
-    }
-  };
       
   return (
     <View style={styles.container}>

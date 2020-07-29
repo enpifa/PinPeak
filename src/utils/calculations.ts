@@ -39,13 +39,23 @@ const getAngle = (magnetometer: ICompass) => {
   if (magnetometer) {
     const {x, y} = magnetometer;
     const angleRad = Math.atan2(y, x);
+
+    let angle = 0;
+
+    if (angleRad >= 0) {
+      angle = Math.atan2(y, x) * (180 / Math.PI);
+    }
+    else {
+      angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
+    }
+
+    return angle;
     
-    return angleRad >= 0
-      ? (angleRad * 180 / Math.PI)
-      : ((angleRad + (2 * Math.PI)) * 180 / Math.PI);
+    // return angleRad >= 0
+    //   ? (angleRad * 180 / Math.PI)
+    //   : ((angleRad + (2 * Math.PI)) * 180 / Math.PI);
   }
 
-  // return Math.round(LPF.next(angle))
   return 0;
 };
 
@@ -58,6 +68,7 @@ const getDegree = (angle: number): number => {
   return angle - 90 >= 0
     ? angle - 90
     : angle + 271;
+  // return angle;
 };
 
 const getDirection = (degree: number) => {
